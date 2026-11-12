@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_page">#FBE9F0</color>      <!-- 页面底色：极浅粉 -->
+    <color name="card_pink_light">#FFF6F9</color> <!-- 卡片：淡粉 -->
+    <color name="card_pink_deep">#F8BBD0</color>  <!-- 深一点的粉（备用） -->
+    <color name="title_color">#4A2530</color>    <!-- 标题：深玫棕 -->
+    <color name="time_color">#B58291</color>    <!-- 时间：灰粉 -->
+    <color name="accent">#EC407A</color>         <!-- 强调：玫红（顶栏） -->
+    <color name="accent_dark">#D81B60</color>    <!-- 深玫红（备用） -->
+</resources>

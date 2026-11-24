@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 自定义主题属性：让布局与代码共用同一套主题色，切换主题时无需逐项改 View。 -->
+<resources>
+    <attr name="noteBg" format="color" />
+    <attr name="noteCard" format="reference" />
+    <attr name="noteTitle" format="color" />
+    <attr name="noteTime" format="color" />
+    <attr name="noteAccent" format="color" />
+    <attr name="noteEditorLine" format="color" />
+    <attr name="noteHint" format="color" />
+    <attr name="noteDivider" format="color" />
+</resources>

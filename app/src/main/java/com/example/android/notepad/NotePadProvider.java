@@ -61,9 +61,9 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
     private static final String DATABASE_NAME = "note_pad.db";
 
     /**
-     * The database version
+     * The database version. Version 3 adds the "done" column for todos.
      */
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     /**
      * A projection map used to select columns from the database
@@ -156,6 +156,11 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
                 NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE,
                 NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE);
 
+        // Maps "done" to "done"
+        sNotesProjectionMap.put(
+                NotePad.Notes.COLUMN_NAME_DONE,
+                NotePad.Notes.COLUMN_NAME_DONE);
+
         /*
          * Creates an initializes a projection map for handling Live Folders
          */
@@ -196,29 +201,30 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
                    + NotePad.Notes.COLUMN_NAME_TITLE + " TEXT,"
                    + NotePad.Notes.COLUMN_NAME_NOTE + " TEXT,"
                    + NotePad.Notes.COLUMN_NAME_CREATE_DATE + " INTEGER,"
-                   + NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE + " INTEGER"
+                   + NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE + " INTEGER,"
+                   + NotePad.Notes.COLUMN_NAME_DONE + " INTEGER NOT NULL DEFAULT 0"
                    + ");");
        }
 
        /**
-        *
-        * Demonstrates that the provider must consider what happens when the
-        * underlying datastore is changed. In this sample, the database is upgraded the database
-        * by destroying the existing data.
-        * A real application should upgrade the database in place.
+        * 数据库升级：保留用户已有笔记，只补上新增的列。
+        * 版本 3 增加了 done 列（待办完成状态）。
         */
        @Override
        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+           Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion);
 
-           // Logs that the database is being upgraded
-           Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-                   + newVersion + ", which will destroy all old data");
-
-           // Kills the table and existing data
-           db.execSQL("DROP TABLE IF EXISTS notes");
-
-           // Recreates the database with a new version
-           onCreate(db);
+           if (oldVersion < 3) {
+               // SQLite 的 ADD COLUMN 是原地升级，不会破坏现有数据。
+               // 用 try/catch 包住，避免旧库已存在该列时报错。
+               try {
+                   db.execSQL("ALTER TABLE " + NotePad.Notes.TABLE_NAME
+                           + " ADD COLUMN " + NotePad.Notes.COLUMN_NAME_DONE
+                           + " INTEGER NOT NULL DEFAULT 0");
+               } catch (SQLException e) {
+                   Log.w(TAG, "done column may already exist", e);
+               }
+           }
        }
    }
 
@@ -538,6 +544,11 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
         // If the values map doesn't contain note text, sets the value to an empty string.
         if (values.containsKey(NotePad.Notes.COLUMN_NAME_NOTE) == false) {
             values.put(NotePad.Notes.COLUMN_NAME_NOTE, "");
+        }
+
+        // 新增笔记默认是未完成的待办。
+        if (values.containsKey(NotePad.Notes.COLUMN_NAME_DONE) == false) {
+            values.put(NotePad.Notes.COLUMN_NAME_DONE, 0);
         }
 
         // Opens the database object in "write" mode.

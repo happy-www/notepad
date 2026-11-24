@@ -28,10 +28,11 @@
         android:layout_marginBottom="15dp"
         android:layout_width="wrap_content"
       	android:ems="25"
-        android:layout_height="wrap_content" 
-        android:autoText="true"
-        android:capitalize="sentences"
-        android:scrollHorizontally="true" />
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:scrollHorizontally="true"
+        android:textColor="?attr/noteTitle"
+        android:textColorHint="?attr/noteHint" />
    		
     <Button android:id="@+id/ok"
         android:layout_width="wrap_content" 

@@ -3,17 +3,144 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/bg_page">
+    android:background="?attr/noteBg">
 
-    <SearchView
-        android:id="@+id/search_view"
+    <!-- 搜索栏：用普通 EditText 而非系统 SearchView，避免其内部 AutoCompleteTextView
+         强制给输入法加 NO_SUGGESTIONS 标志，导致中文输入法不显示候选词栏。 -->
+    <LinearLayout
+        android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="搜索标题或内容"
-        android:iconifiedByDefault="false" />
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="?attr/noteCard"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp">
 
-    <ListView
-        android:id="@android:id/list"
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/ic_menu_search"
+            android:contentDescription="@string/search_hint"
+            android:tint="?attr/noteHint" />
+
+        <EditText
+            android:id="@+id/search_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@null"
+            android:hint="@string/search_hint"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="?attr/noteTitle"
+            android:textColorHint="?attr/noteHint"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/search_clear"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:contentDescription="@string/search_hint"
+            android:tint="?attr/noteHint"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <!-- 待办筛选栏：状态统计 + 全部/待完成/已完成 三个筛选标签 -->
+    <LinearLayout
+        android:id="@+id/todo_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/todo_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="?attr/noteHint"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/todo_filter_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/noteCard"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="@string/todo_filter_all"
+            android:textColor="?attr/noteHint"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/todo_filter_pending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="?attr/noteCard"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="@string/todo_filter_pending"
+            android:textColor="?attr/noteHint"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/todo_filter_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="?attr/noteCard"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="@string/todo_filter_done"
+            android:textColor="?attr/noteHint"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="12dp" />
+
+        <TextView
+            android:id="@android:id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="96dp"
+            android:gravity="center"
+            android:lineSpacingExtra="6dp"
+            android:text="@string/empty_notes"
+            android:textColor="?attr/noteHint"
+            android:textSize="16sp" />
+    </FrameLayout>
 </LinearLayout>

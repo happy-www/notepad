@@ -7,6 +7,7 @@
     <item android:id="@+id/context_delete"
           android:title="@string/menu_delete" />
     <item android:id="@+id/context_export"
-        android:title="导出本条" />
-
+        android:title="@string/menu_export_one" />
+    <item android:id="@+id/context_toggle_done"
+        android:title="@string/todo_mark_done" />
 </menu>

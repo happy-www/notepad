@@ -3,10 +3,9 @@
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-  
+
           http://www.apache.org/licenses/LICENSE-2.0
-  
+
      Unless required by applicable law or agreed to in writing, software
      distributed under the License is distributed on an "AS IS" BASIS,
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,4 +39,86 @@
     <string name="error_title">Error</string>
     <string name="error_message">Error loading note</string>
     <string name="nothing_to_save">There is nothing to save</string>
+
+    <!-- UI 美化与主题设置 -->
+    <string name="search_hint">搜索标题或内容…</string>
+    <string name="empty_notes">还没有笔记\n点右上角 + 新建一条吧</string>
+    <string name="menu_settings">主题与字号</string>
+    <string name="settings_title">主题与字号</string>
+    <string name="settings_theme">配色主题</string>
+    <string name="settings_text_size">正文字号</string>
+    <string name="settings_apply">保存并应用</string>
+    <string name="settings_reset">恢复默认</string>
+    <string name="theme_pink">樱花粉</string>
+    <string name="theme_mint">薄荷绿</string>
+    <string name="theme_paper">暖米黄</string>
+    <string name="theme_night">夜空黑</string>
+    <string name="settings_saved">设置已保存</string>
+    <string name="note_title_hint">笔记标题</string>
+    <string name="note_content_hint">开始记录你的想法…</string>
+
+    <!-- 导出笔记 -->
+    <string name="menu_export">导出 / 分享</string>
+    <string name="menu_export_one">导出本条</string>
+    <string name="export_title">导出笔记</string>
+    <string name="export_share">分享纯文本</string>
+    <string name="export_txt">保存为 TXT 文本</string>
+    <string name="export_md">保存为 Markdown</string>
+    <string name="export_html">保存为 HTML 网页</string>
+    <string name="export_json">保存为 JSON（可再次导入）</string>
+    <string name="export_done">已导出：%1$s</string>
+    <string name="export_failed">导出失败：%1$s</string>
+    <string name="export_empty">还没有笔记可导出</string>
+    <string name="export_file_name">NotePad_%1$s</string>
+
+    <!-- 云备份与恢复 -->
+    <string name="menu_backup">备份与恢复</string>
+    <string name="backup_title">备份与恢复</string>
+    <string name="backup_status">本机备份：%1$d 份 · 上次：%2$s</string>
+    <string name="backup_status_empty">还没有本机备份，先备份一次吧</string>
+    <string name="backup_local">立即备份到本机</string>
+    <string name="backup_cloud_save">保存到云盘（文件选择器）</string>
+    <string name="backup_cloud_config">设置云同步地址</string>
+    <string name="backup_cloud_upload">上传到云同步地址</string>
+    <string name="backup_cloud_download">从云同步地址恢复</string>
+    <string name="backup_file_restore">从本地 / 云盘文件恢复</string>
+    <string name="backup_share_latest">分享最新备份</string>
+    <string name="backup_hint">备份文件包含标题、正文与时间戳；恢复时会跳过内容完全相同的笔记。</string>
+    <string name="backup_history">备份记录（最近 10 份）</string>
+    <string name="backup_none">暂无备份记录</string>
+    <string name="backup_item_name">%1$s</string>
+    <string name="backup_item_meta">%1$d 条笔记 · %2$s</string>
+    <string name="backup_done">备份完成：%1$s</string>
+    <string name="backup_failed">备份失败：%1$s</string>
+    <string name="backup_restore_title">确认恢复</string>
+    <string name="backup_restore_message">备份时间：%1$s\n笔记数量：%2$d 条\n\n「合并」会跳过重复笔记；「清空后恢复」会删除当前全部笔记，请谨慎选择。</string>
+    <string name="backup_merge">合并</string>
+    <string name="backup_replace">清空后恢复</string>
+    <string name="backup_restore_done">恢复完成：导入 %1$d 条，跳过 %2$d 条</string>
+    <string name="backup_delete">删除这份备份</string>
+    <string name="backup_deleted">备份已删除</string>
+    <string name="cloud_config_title">云同步设置</string>
+    <string name="cloud_config_message">填写支持 PUT / GET 的 HTTP(S) 地址，例如自建服务器或 WebDAV 网关；令牌会随请求以 Bearer 方式发送，可留空。</string>
+    <string name="cloud_url_hint">https://example.com/notepad/backup.json</string>
+    <string name="cloud_token_hint">访问令牌（可选）</string>
+    <string name="cloud_saved">云同步地址已保存</string>
+    <string name="cloud_not_set">请先在「设置云同步地址」中填写地址</string>
+    <string name="cloud_uploading">正在上传备份…</string>
+    <string name="cloud_downloading">正在下载备份…</string>
+    <string name="cloud_upload_done">上传成功</string>
+    <string name="cloud_download_done">下载成功，请选择恢复方式</string>
+    <string name="backup_invalid">备份文件格式错误或校验失败</string>
+    <string name="backup_restore_invalid">无法恢复：%1$s\n\n请选择 notepad_backup_ 开头的 .json 备份文件，而不是「导出笔记」生成的 .md / .txt / .html 文件。</string>
+    <string name="backup_pick_hint">请选择 notepad_backup_ 开头的 .json 备份文件</string>
+
+    <!-- 待办功能 -->
+    <string name="todo_status">待办 %1$d · 已完成 %2$d</string>
+    <string name="todo_filter_all">全部</string>
+    <string name="todo_filter_pending">待完成</string>
+    <string name="todo_filter_done">已完成</string>
+    <string name="todo_mark_done">标记为已完成</string>
+    <string name="todo_mark_undone">取消完成</string>
+    <string name="todo_done">已完成</string>
+    <string name="todo_pending">待完成</string>
+    <string name="todo_toggle_hint">点击左侧圆圈切换完成状态</string>
 </resources>

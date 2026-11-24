@@ -1,20 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- 应用主主题：浅色基础 + 玫红顶栏 -->
+    <!-- 樱花粉（默认主题） -->
     <style name="AppTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/PinkActionBar</item>
+        <item name="android:windowBackground">@color/bg_page</item>
+        <item name="android:actionBarStyle">@style/ActionBarPink</item>
+        <item name="noteBg">@color/bg_page</item>
+        <item name="noteCard">@drawable/card_white</item>
+        <item name="noteTitle">@color/title_color</item>
+        <item name="noteTime">@color/time_color</item>
+        <item name="noteAccent">@color/accent</item>
+        <item name="noteEditorLine">@color/line_pink</item>
+        <item name="noteHint">@color/hint_pink</item>
+        <item name="noteDivider">@color/divider_pink</item>
     </style>
 
-    <!-- 顶栏样式：玫红背景 + 白色标题 -->
-    <style name="PinkActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+    <!-- 薄荷绿 -->
+    <style name="ThemeMint" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:windowBackground">@color/bg_mint</item>
+        <item name="android:actionBarStyle">@style/ActionBarMint</item>
+        <item name="noteBg">@color/bg_mint</item>
+        <item name="noteCard">@drawable/card_mint</item>
+        <item name="noteTitle">@color/title_mint</item>
+        <item name="noteTime">@color/time_mint</item>
+        <item name="noteAccent">@color/accent_mint</item>
+        <item name="noteEditorLine">@color/line_mint</item>
+        <item name="noteHint">@color/hint_mint</item>
+        <item name="noteDivider">@color/divider_mint</item>
+    </style>
+
+    <!-- 暖米黄 -->
+    <style name="ThemePaper" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:windowBackground">@color/bg_paper</item>
+        <item name="android:actionBarStyle">@style/ActionBarPaper</item>
+        <item name="noteBg">@color/bg_paper</item>
+        <item name="noteCard">@drawable/card_paper</item>
+        <item name="noteTitle">@color/title_paper</item>
+        <item name="noteTime">@color/time_paper</item>
+        <item name="noteAccent">@color/accent_paper</item>
+        <item name="noteEditorLine">@color/line_paper</item>
+        <item name="noteHint">@color/hint_paper</item>
+        <item name="noteDivider">@color/divider_paper</item>
+    </style>
+
+    <!-- 夜空黑 -->
+    <style name="ThemeNight" parent="@android:style/Theme.Holo">
+        <item name="android:windowBackground">@color/bg_night</item>
+        <item name="android:actionBarStyle">@style/ActionBarNight</item>
+        <item name="noteBg">@color/bg_night</item>
+        <item name="noteCard">@drawable/card_night</item>
+        <item name="noteTitle">@color/title_night</item>
+        <item name="noteTime">@color/time_night</item>
+        <item name="noteAccent">@color/accent_night</item>
+        <item name="noteEditorLine">@color/line_night</item>
+        <item name="noteHint">@color/hint_night</item>
+        <item name="noteDivider">@color/divider_night</item>
+    </style>
+
+    <style name="ActionBarPink" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/accent</item>
-        <item name="android:titleTextStyle">@style/PinkActionBarTitle</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitleWhite</item>
     </style>
 
-    <style name="PinkActionBarTitle"
+    <style name="ActionBarMint" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/accent_mint</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitleWhite</item>
+    </style>
+
+    <style name="ActionBarPaper" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/accent_paper</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitleWhite</item>
+    </style>
+
+    <style name="ActionBarNight" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@color/card_night</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitleWhite</item>
+    </style>
+
+    <style name="ActionBarTitleWhite"
         parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!-- 标题编辑对话框：与当前配色保持一致 -->
+    <style name="DialogPink" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="noteBg">@color/bg_page</item>
+        <item name="noteCard">@drawable/card_white</item>
+        <item name="noteTitle">@color/title_color</item>
+        <item name="noteTime">@color/time_color</item>
+        <item name="noteAccent">@color/accent</item>
+        <item name="noteEditorLine">@color/line_pink</item>
+        <item name="noteHint">@color/hint_pink</item>
+        <item name="noteDivider">@color/divider_pink</item>
+    </style>
+
+    <style name="DialogMint" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="noteBg">@color/bg_mint</item>
+        <item name="noteCard">@drawable/card_mint</item>
+        <item name="noteTitle">@color/title_mint</item>
+        <item name="noteTime">@color/time_mint</item>
+        <item name="noteAccent">@color/accent_mint</item>
+        <item name="noteEditorLine">@color/line_mint</item>
+        <item name="noteHint">@color/hint_mint</item>
+        <item name="noteDivider">@color/divider_mint</item>
+    </style>
+
+    <style name="DialogPaper" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="noteBg">@color/bg_paper</item>
+        <item name="noteCard">@drawable/card_paper</item>
+        <item name="noteTitle">@color/title_paper</item>
+        <item name="noteTime">@color/time_paper</item>
+        <item name="noteAccent">@color/accent_paper</item>
+        <item name="noteEditorLine">@color/line_paper</item>
+        <item name="noteHint">@color/hint_paper</item>
+        <item name="noteDivider">@color/divider_paper</item>
+    </style>
+
+    <style name="DialogNight" parent="@android:style/Theme.Holo.Dialog">
+        <item name="noteBg">@color/bg_night</item>
+        <item name="noteCard">@drawable/card_night</item>
+        <item name="noteTitle">@color/title_night</item>
+        <item name="noteTime">@color/time_night</item>
+        <item name="noteAccent">@color/accent_night</item>
+        <item name="noteEditorLine">@color/line_night</item>
+        <item name="noteHint">@color/hint_night</item>
+        <item name="noteDivider">@color/divider_night</item>
     </style>
 
 </resources>

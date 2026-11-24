@@ -27,6 +27,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -35,9 +36,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 /**
@@ -62,11 +66,13 @@ public class NoteEditor extends Activity {
         new String[] {
             NotePad.Notes._ID,
             NotePad.Notes.COLUMN_NAME_TITLE,
-            NotePad.Notes.COLUMN_NAME_NOTE
+            NotePad.Notes.COLUMN_NAME_NOTE,
+            NotePad.Notes.COLUMN_NAME_DONE
     };
 
     // A label for the saved state of the activity
     private static final String ORIGINAL_CONTENT = "origContent";
+    private static final int REQ_EXPORT_NOTE = 3005;
 
     // This Activity can be started by more than one action. Each action is represented
     // as a "state" constant
@@ -78,7 +84,10 @@ public class NoteEditor extends Activity {
     private Uri mUri;
     private Cursor mCursor;
     private EditText mText;
+    private EditText mTitleText;
+    private CheckBox mDoneCheck;
     private String mOriginalContent;
+    private boolean mDone;
 
     /**
      * Defines a custom EditText View that draws lines between each line of text that is displayed.
@@ -92,10 +101,14 @@ public class NoteEditor extends Activity {
             super(context, attrs);
 
             // Creates a Rect and a Paint object, and sets the style and color of the Paint object.
+            // 横线颜色跟随当前主题，而不是写死的蓝色。
             mRect = new Rect();
             mPaint = new Paint();
             mPaint.setStyle(Paint.Style.STROKE);
-            mPaint.setColor(0x800000FF);
+            TypedArray themeAttrs = context.obtainStyledAttributes(
+                    new int[] {R.attr.noteEditorLine});
+            mPaint.setColor(themeAttrs.getColor(0, 0x800000FF));
+            themeAttrs.recycle();
         }
 
         /**
@@ -139,6 +152,7 @@ public class NoteEditor extends Activity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
 
         /*
@@ -229,6 +243,18 @@ public class NoteEditor extends Activity {
 
         // Gets a handle to the EditText in the the layout.
         mText = (EditText) findViewById(R.id.note);
+        mTitleText = (EditText) findViewById(R.id.note_title);
+        mDoneCheck = (CheckBox) findViewById(R.id.todo_done);
+        if (mDoneCheck != null) {
+            mDoneCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    mDone = isChecked;
+                    buttonView.setText(isChecked ? R.string.todo_mark_undone
+                            : R.string.todo_mark_done);
+                }
+            });
+        }
 
         /*
          * If this Activity had stopped previously, its state was written the ORIGINAL_CONTENT
@@ -274,9 +300,15 @@ public class NoteEditor extends Activity {
                 Resources res = getResources();
                 String text = String.format(res.getString(R.string.title_edit), title);
                 setTitle(text);
+                if (mTitleText != null) {
+                    mTitleText.setText(title == null ? "" : title);
+                }
             // Sets the title to "create" for inserts
             } else if (mState == STATE_INSERT) {
                 setTitle(getText(R.string.title_create));
+                if (mTitleText != null) {
+                    mTitleText.setText("");
+                }
             }
 
             /*
@@ -291,10 +323,31 @@ public class NoteEditor extends Activity {
             int colNoteIndex = mCursor.getColumnIndex(NotePad.Notes.COLUMN_NAME_NOTE);
             String note = mCursor.getString(colNoteIndex);
             mText.setTextKeepState(note);
+            mText.setTextSize(TypedValue.COMPLEX_UNIT_SP, ThemeManager.getTextSize(this));
 
             // Stores the original note text, to allow the user to revert changes.
             if (mOriginalContent == null) {
                 mOriginalContent = note;
+            }
+
+            // 载入待办完成状态（仅首次载入，避免覆盖用户本次勾选）
+            int doneIndex = mCursor.getColumnIndex(NotePad.Notes.COLUMN_NAME_DONE);
+            if (doneIndex >= 0) {
+                mDone = mCursor.getInt(doneIndex) != 0;
+                if (mDoneCheck != null) {
+                    mDoneCheck.setOnCheckedChangeListener(null);
+                    mDoneCheck.setChecked(mDone);
+                    mDoneCheck.setText(mDone ? R.string.todo_mark_undone
+                            : R.string.todo_mark_done);
+                    mDoneCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            mDone = isChecked;
+                            buttonView.setText(isChecked ? R.string.todo_mark_undone
+                                    : R.string.todo_mark_done);
+                        }
+                    });
+                }
             }
 
         /*
@@ -366,13 +419,22 @@ public class NoteEditor extends Activity {
                  * onCreate() inserted a new empty note into the provider, and it is this new note
                  * that is being edited.
                  */
-            } else if (mState == STATE_EDIT) {
-                // Creates a map to contain the new values for the columns
-                updateNote(text, null);
-            } else if (mState == STATE_INSERT) {
-                updateNote(text, text);
-                mState = STATE_EDIT;
-          }
+            } else {
+                // 标题可直接在编辑器顶部修改；留空时保留原标题 / 用正文生成标题。
+                String title = null;
+                if (mTitleText != null) {
+                    String typed = mTitleText.getText().toString().trim();
+                    if (typed.length() > 0) {
+                        title = typed;
+                    }
+                }
+                if (mState == STATE_EDIT) {
+                    updateNote(text, title);
+                } else if (mState == STATE_INSERT) {
+                    updateNote(text, title == null ? text : title);
+                    mState = STATE_EDIT;
+                }
+            }
         }
     }
 
@@ -410,6 +472,9 @@ public class NoteEditor extends Activity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        if (mCursor == null || mText == null) {
+            return super.onPrepareOptionsMenu(menu);
+        }
         // Check if note has changed and enable/disable the revert option
         int colNoteIndex = mCursor.getColumnIndex(NotePad.Notes.COLUMN_NAME_NOTE);
         String savedNote = mCursor.getString(colNoteIndex);
@@ -442,10 +507,21 @@ public class NoteEditor extends Activity {
         } else if (id == R.id.menu_delete) {
             deleteNote();
             finish();
+        } else if (id == R.id.menu_export_note) {
+            NoteExportManager.showExportDialog(this, mUri, REQ_EXPORT_NOTE);
+            return true;
         } else if (id == R.id.menu_revert) {
             cancelNote();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_EXPORT_NOTE) {
+            NoteExportManager.handleResult(this, requestCode, resultCode, data);
+        }
     }
 
 //BEGIN_INCLUDE(paste)
@@ -525,6 +601,7 @@ public class NoteEditor extends Activity {
         // Sets up a map to contain values to be updated in the provider.
         ContentValues values = new ContentValues();
         values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, System.currentTimeMillis());
+        values.put(NotePad.Notes.COLUMN_NAME_DONE, mDone ? 1 : 0);
 
         // If the action is to insert a new note, this creates an initial title for it.
         if (mState == STATE_INSERT) {

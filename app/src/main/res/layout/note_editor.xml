@@ -1,28 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2010 The Android Open Source Project
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-          http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
-<view xmlns:android="http://schemas.android.com/apk/res/android"
-    class="com.example.android.notepad.NoteEditor$LinedEditText"
-    android:id="@+id/note"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    android:padding="5dp"
-    android:scrollbars="vertical"
-    android:fadingEdge="vertical"
-    android:gravity="top"
-    android:textSize="22sp"
-    android:capitalize="sentences"
-/>
+    android:orientation="vertical"
+    android:background="?attr/noteBg"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <EditText
+        android:id="@+id/note_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="?attr/noteCard"
+        android:hint="@string/note_title_hint"
+        android:maxLines="1"
+        android:padding="12dp"
+        android:textColor="?attr/noteTitle"
+        android:textColorHint="?attr/noteHint"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- 待办开关：勾选后这条笔记即视为已完成 -->
+    <CheckBox
+        android:id="@+id/todo_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/todo_mark_done"
+        android:textColor="?attr/noteAccent"
+        android:textSize="14sp" />
+
+    <view xmlns:android="http://schemas.android.com/apk/res/android"
+        class="com.example.android.notepad.NoteEditor$LinedEditText"
+        android:id="@+id/note"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="?attr/noteCard"
+        android:gravity="top"
+        android:hint="@string/note_content_hint"
+        android:inputType="textMultiLine"
+        android:padding="18dp"
+        android:scrollbars="vertical"
+        android:textColor="?attr/noteTitle"
+        android:textColorHint="?attr/noteHint"
+        android:textSize="22sp" />
+</LinearLayout>

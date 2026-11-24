@@ -150,5 +150,11 @@ public final class NotePad {
          * <P>Type: INTEGER (long from System.curentTimeMillis())</P>
          */
         public static final String COLUMN_NAME_MODIFICATION_DATE = "modified";
+
+        /**
+         * Column name for the todo done flag (0 = 待办, 1 = 已完成)
+         * <P>Type: INTEGER (0 or 1, defaults to 0)</P>
+         */
+        public static final String COLUMN_NAME_DONE = "done";
     }
 }

@@ -64,6 +64,7 @@ public class TitleEditor extends Activity {
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ThemeManager.applyDialogTheme(this);
         super.onCreate(savedInstanceState);
 
         // Set the View for this Activity object's UI.
